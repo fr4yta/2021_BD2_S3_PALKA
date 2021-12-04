@@ -5,9 +5,98 @@
 </template>
 
 <style lang="scss">
+$background: #F2F7FF;
+$black: #000;
+$hover: #75E3EA;
+$btn-background: #75E3EA;
+$title: rgba(51, 51, 51, 0.33);
+$white: #FFF;
+@import '~bootstrap/dist/css/bootstrap.css';
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
+* {
+  scroll-behavior: smooth;
+}
 
 html, body {
+  background-color: $background;
   font-family: 'Inter', sans-serif;
+}
+
+div.container-fluid {
+  background: url('assets/upper-background.svg') no-repeat;
+  background-size: cover;
+  background-position: top;
+}
+
+a {
+  text-decoration: none;
+  color: $black;
+}
+
+a:hover {
+  color: $hover;
+}
+
+ul.menu {
+  list-style-type: none;
+  margin: 0 !important;
+}
+
+li.menu-item {
+  margin: 0 15px;
+}
+
+.navbar {
+  justify-content: flex-start;
+}
+
+h1.greetings {
+  padding-top: 70px;
+  font-size: 2.5vw;
+  font-weight: bold;
+  color: $black;
+}
+
+.btn-pricelist {
+  padding: 12px 24px;
+  margin-top: 20px;
+  background: $btn-background;
+  border: none;
+}
+
+.title {
+  font-size: 4vw;
+  text-align: center;
+  color: $title;
+  font-weight: bold;
+  margin-top: 200px;
+}
+
+.attractions-row {
+  margin-top: 70px;
+  text-align: center;
+}
+
+.attraction {
+  background: $white;
+  padding: 50px;
+  border-radius: 12px;
+  -webkit-box-shadow: 8px 8px 46px -40px $black;
+  -moz-box-shadow: 8px 8px 46px -40px $black;
+  box-shadow: 8px 8px 46px -40px $black;
+}
+
+.col-sm-4 {
+  @media (min-width: 576px) {
+    flex: 0 0 auto;
+    width: 30%;
+    margin: 0 auto;
+  }
+}
+
+.attraction-title {
+  font-size: 2.5vw;
+  color: $btn-background;
+  font-weight: bold;
 }
 </style>
