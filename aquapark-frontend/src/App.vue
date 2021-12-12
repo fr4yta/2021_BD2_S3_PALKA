@@ -33,6 +33,10 @@ a {
   color: $black;
 }
 
+.btn:active {
+
+}
+
 a:hover {
   color: $hover;
 }
@@ -57,7 +61,7 @@ h1.greetings {
   color: $black;
 }
 
-.btn-pricelist {
+.btn-priceList {
   padding: 12px 24px;
   margin-top: 20px;
   background: $btn-background;
@@ -98,5 +102,25 @@ h1.greetings {
   font-size: 2.5vw;
   color: $btn-background;
   font-weight: bold;
+}
+
+.priceList .priceBox {
+  padding: 56px;
+  border-radius: 12px;
+  -webkit-box-shadow: 8px 8px 46px -40px $black;
+  -moz-box-shadow: 8px 8px 46px -40px $black;
+  box-shadow: 8px 8px 46px -40px $black;
+
+  p.price {
+    font-size: 2vw;
+    font-weight: bold;
+  }
+
+  .btn-buyTicket {
+    padding: 12px 24px;
+    margin-top: 20px;
+    background: $btn-background;
+    border: none;
+  }
 }
 </style>
