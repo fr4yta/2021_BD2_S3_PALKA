@@ -23,7 +23,7 @@ html, body {
 }
 
 div.container-fluid {
-  background: url('assets/upper-background.svg') no-repeat;
+  background: url('assets/upper_background.svg') no-repeat;
   background-size: cover;
   background-position: top;
 }
@@ -166,5 +166,50 @@ $border: 2px solid #ddd;
   font-size: 3vw;
   font-weight: bold;
   text-align: center;
+}
+
+.notLoggedIn {
+  background: url('assets/login_bg.svg') no-repeat;
+  background-size: cover;
+  height: 100vh !important;
+
+  .loginLogo {
+    padding: 170px 0 0 0;
+    margin: 0 auto;
+    display: block;
+  }
+
+  input {
+    display: block;
+    margin: 10px auto;
+    border: 1px solid $white;
+    box-sizing: border-box;
+    border-radius: 4px;
+    text-align: center;
+    background: none;
+    padding: 10px 20px;
+    width: 30%;
+    color: $white;
+  }
+
+  .btn-login {
+    padding: 12px 24px;
+    margin-top: 32px !important;
+    background: $btn-background !important;
+    border: none;
+    width: 30%;
+    margin: 0 auto;
+    display: block;
+  }
+
+  .register {
+    color: $white;
+    text-align: center;
+    padding: 10px 0;
+
+    a {
+      color: $btn-background;
+    }
+  }
 }
 </style>

@@ -14,11 +14,11 @@
               cennik
             </li>
           </a>
-          <a href="#">
+          <router-link to="login">
             <li class="menu-item d-inline-block text-uppercase">
               logowanie
             </li>
-          </a>
+          </router-link>
         </ul>
       </nav>
       <div class="welcome row">
