@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <router-view />
+    <router-view/>
   </div>
 </template>
 
@@ -33,8 +33,13 @@ a {
   color: $black;
 }
 
-.btn:active {
+.btn:focus {
+  box-shadow: none !important;
+  background-color: $btn-background;
+}
 
+.btn:hover {
+  background-color: $hover;
 }
 
 a:hover {
@@ -115,12 +120,51 @@ h1.greetings {
     font-size: 2vw;
     font-weight: bold;
   }
+}
 
+.btn-buyTicket {
+  padding: 12px 24px;
+  margin-top: 20px;
+  background: $btn-background !important;
+  border: none;
+}
+
+.modal-body {
   .btn-buyTicket {
-    padding: 12px 24px;
-    margin-top: 20px;
-    background: $btn-background;
-    border: none;
+    width: 100%;
+    margin: 0 auto;
   }
+}
+
+/* Tickets quantity */
+$border: 2px solid #ddd;
+.quantity-toggle {
+  display: flex;
+  justify-content: center;
+
+  input {
+    border: 0;
+    border-top: $border;
+    border-bottom: $border;
+    width: 2.5rem;
+    text-align: center;
+    padding: 0 .5rem;
+  }
+
+  button {
+    border: $border;
+    padding: .5rem;
+    background: #f5f5f5;
+    color: #888;
+    font-size: 1rem;
+    cursor: pointer;
+  }
+}
+
+.finalPrice {
+  padding: 10px;
+  font-size: 3vw;
+  font-weight: bold;
+  text-align: center;
 }
 </style>
