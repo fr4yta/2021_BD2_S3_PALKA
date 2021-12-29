@@ -16,45 +16,17 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping(path = "/api")
+@RequestMapping(path = "/api/users")
 public class UserContorller {
-    private final AuthenticationManager authenticationManager;
-    private final JwtTokenUtil jwtTokenUtil;
     private final UserService userService;
 
     public UserContorller(AuthenticationManager authenticationManager, JwtTokenUtil jwtTokenUtil, UserService userService) {
-        this.authenticationManager = authenticationManager;
-        this.jwtTokenUtil = jwtTokenUtil;
         this.userService = userService;
     }
 
-    @GetMapping("users")
+    @GetMapping
     public ResponseEntity<List<User>> findAllUsers(){
         return ResponseEntity.ok(userService.findAll());
     }
 
-    @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody @Valid User request) {
-        try {
-            Authentication authenticate = authenticationManager
-                    .authenticate(
-                            new UsernamePasswordAuthenticationToken(
-                                    request.getUsername(), request.getPassword()
-                            )
-                    );
-
-            User user = (User) authenticate.getPrincipal();
-
-            return ResponseEntity.ok()
-                    .header(
-                            HttpHeaders.AUTHORIZATION,
-                            jwtTokenUtil.generateAccessToken(user)
-                    ).build();
-        } catch (BadCredentialsException ex) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ex.getMessage());
-        }
-        catch (Exception e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
-    }
 }

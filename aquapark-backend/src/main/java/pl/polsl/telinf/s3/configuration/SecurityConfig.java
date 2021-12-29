@@ -66,9 +66,7 @@ class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 //public endpoints
                 .antMatchers("/api/priceList/actualPriceList").permitAll()
-                .antMatchers("/api/login").permitAll()
-                .antMatchers("/api/register").permitAll()
-                .antMatchers("/api/users").permitAll()
+                .antMatchers("/api/auth/*").permitAll()
 
                 //private endpoints
                 .anyRequest().authenticated();
