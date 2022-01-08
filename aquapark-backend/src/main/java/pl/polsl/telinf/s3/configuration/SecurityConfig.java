@@ -1,6 +1,7 @@
 package pl.polsl.telinf.s3.configuration;
 
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -13,6 +14,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import pl.polsl.telinf.s3.repository.jpa.JPAUserRepository;
 import pl.polsl.telinf.s3.security.JwtTokenFilter;
+import pl.polsl.telinf.s3.security.Role;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -67,6 +69,9 @@ class SecurityConfig extends WebSecurityConfigurerAdapter {
                 //public endpoints
                 .antMatchers("/api/priceList/actualPriceList").permitAll()
                 .antMatchers("/api/auth/*").permitAll()
+
+                //admin only endpoints
+                .antMatchers("/api/users").hasRole(Role.ADMIN)
 
                 //private endpoints
                 .anyRequest().authenticated();
