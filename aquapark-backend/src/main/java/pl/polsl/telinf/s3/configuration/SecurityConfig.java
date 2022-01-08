@@ -12,6 +12,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import pl.polsl.telinf.s3.repository.jpa.JPAUserRepository;
 import pl.polsl.telinf.s3.security.JwtTokenFilter;
@@ -22,6 +23,7 @@ import javax.servlet.http.HttpServletResponse;
 import static java.lang.String.format;
 
 @EnableWebSecurity
+@EnableWebMvc
 class SecurityConfig extends WebSecurityConfigurerAdapter implements WebMvcConfigurer {
 
     private JPAUserRepository userRepository;
