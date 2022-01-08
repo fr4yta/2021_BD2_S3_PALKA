@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import pl.polsl.telinf.s3.domain.dtoTODO.AuthRequest;
+import pl.polsl.telinf.s3.domain.dtoTODO.UserDto;
 import pl.polsl.telinf.s3.domain.model.user.User;
 import pl.polsl.telinf.s3.security.JwtTokenUtil;
 import pl.polsl.telinf.s3.service.AuthService;
@@ -49,10 +50,21 @@ public class AuthController {
                             jwtTokenUtil.generateAccessToken(user)
                     ).build();
         } catch (BadCredentialsException ex) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ex.getMessage());
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).header(HttpHeaders.WARNING, ex.getMessage()).build();
         }
         catch (Exception e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
+            return ResponseEntity.badRequest().header(HttpHeaders.WARNING, e.getMessage()).build();
         }
+    }
+
+    @PostMapping(path = "/register")
+    public ResponseEntity<UserDto> register(@RequestBody @Valid UserDto userDto) {
+        try {
+            User created = authService.register(userDto);
+        }
+        catch (Exception ex){
+            ResponseEntity.badRequest().header(HttpHeaders.WARNING, ex.getMessage()).build();
+        }
+        return ResponseEntity.ok().build();
     }
 }

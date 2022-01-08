@@ -11,15 +11,20 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import pl.polsl.telinf.s3.repository.jpa.JPAUserRepository;
 import pl.polsl.telinf.s3.security.JwtTokenFilter;
+import pl.polsl.telinf.s3.security.Role;
 
 import javax.servlet.http.HttpServletResponse;
 
 import static java.lang.String.format;
 
 @EnableWebSecurity
-class SecurityConfig extends WebSecurityConfigurerAdapter {
+@EnableWebMvc
+class SecurityConfig extends WebSecurityConfigurerAdapter implements WebMvcConfigurer {
 
     private JPAUserRepository userRepository;
     private final JwtTokenFilter jwtTokenFilter;
@@ -68,6 +73,9 @@ class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/priceList/actualPriceList").permitAll()
                 .antMatchers("/api/auth/*").permitAll()
 
+                //admin only endpoints
+                .antMatchers("/api/users").hasRole(Role.ADMIN)
+
                 //private endpoints
                 .anyRequest().authenticated();
 
@@ -77,6 +85,11 @@ class SecurityConfig extends WebSecurityConfigurerAdapter {
         );
 
 
+    }
+
+    @Override
+    public void addCorsMappings(CorsRegistry registry) {
+        registry.addMapping("/**");
     }
 
     @Override @Bean
