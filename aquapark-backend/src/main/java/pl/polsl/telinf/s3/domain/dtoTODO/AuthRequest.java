@@ -1,8 +1,8 @@
 package pl.polsl.telinf.s3.domain.dtoTODO;
 
-import lombok.Value;
+import lombok.Data;
 
-@Value
+@Data
 public class AuthRequest {
     private String username;
     private String password;
