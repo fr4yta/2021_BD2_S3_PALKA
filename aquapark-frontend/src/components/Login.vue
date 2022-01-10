@@ -39,6 +39,7 @@ export default {
             self.$router.push('panel');
           })
           .catch((err) => {
+            console.log(err)
             if (err.response.status === 400) {
               self.$toastr.e("Nie wypełniłeś wszystkich pól wymaganych do zalogowania.");
             } else if (err.response.status === 401) {
