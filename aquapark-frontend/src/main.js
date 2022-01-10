@@ -17,7 +17,7 @@ Vue.use(VueToastr, {
  * Headers for all requests sent from app
  */
 axios.interceptors.request.use((config) => {
-    config.headers.Authorization = 'Bearer ' + localStorage.getItem('jwt-token');
+    config.headers.Authorization = 'Bearer ' + localStorage.getItem('token');
     return config;
 }, (error) => {
     return Promise.reject(error);
