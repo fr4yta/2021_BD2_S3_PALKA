@@ -4,12 +4,12 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import pl.polsl.telinf.s3.domain.dtoTODO.UserAlreadyExistsException;
-import pl.polsl.telinf.s3.domain.dtoTODO.UserDto;
+import pl.polsl.telinf.s3.domain.dto.exception.UnmatchedPasswordsException;
+import pl.polsl.telinf.s3.domain.dto.exception.UserAlreadyExistsException;
+import pl.polsl.telinf.s3.domain.dto.UserDto;
 import pl.polsl.telinf.s3.domain.model.user.User;
 import pl.polsl.telinf.s3.repository.jpa.JPAUserRepository;
 import pl.polsl.telinf.s3.repository.jpa.JPAUserTypeRepository;
-import pl.polsl.telinf.s3.security.Role;
 
 import static java.lang.String.format;
 
@@ -32,21 +32,22 @@ public class AuthService implements UserDetailsService {
                 );
     }
 
-    public User register(UserDto userDto) throws UserAlreadyExistsException {
+    public User register(UserDto userDto) throws UserAlreadyExistsException, UnmatchedPasswordsException {
 
-        if(checkIfUserAlreadyExists(userDto.getEmail())) {
+        if(checkIfUserAlreadyExists(userDto.getEmail(), userRepository)) {
             throw new UserAlreadyExistsException();
         }
-        User user = new User();
-        user.setEmail(userDto.getEmail());
-        user.setUsername(user.getUsername());
-        user.setUserType(userTypeRepository.findUserTypeByUserTypeContains(Role.USER).orElse(null));
-        userRepository.save(user);
-        return user;
+        if(!checkIfPasswordsAreSame(userDto))
+            throw new UnmatchedPasswordsException();
+
+        return userRepository.save(userDto.toUser(this.userTypeRepository));
     }
 
-    //TODO
-    private static boolean checkIfUserAlreadyExists(String email) {
-        return false;
+    private static boolean checkIfPasswordsAreSame(UserDto userDto) {
+        return userDto.getPassword().equals(userDto.getRepeatedPassword());
+    }
+
+    private static boolean checkIfUserAlreadyExists(String email, JPAUserRepository userRepository) {
+        return userRepository.findByEmail(email).isPresent();
     }
 }

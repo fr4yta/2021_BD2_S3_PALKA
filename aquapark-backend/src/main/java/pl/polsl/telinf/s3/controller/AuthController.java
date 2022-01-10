@@ -11,13 +11,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import pl.polsl.telinf.s3.domain.dtoTODO.AuthRequest;
-import pl.polsl.telinf.s3.domain.dtoTODO.UserDto;
+import pl.polsl.telinf.s3.domain.dto.AuthRequest;
+import pl.polsl.telinf.s3.domain.dto.UserDto;
 import pl.polsl.telinf.s3.domain.model.user.User;
 import pl.polsl.telinf.s3.security.JwtTokenUtil;
 import pl.polsl.telinf.s3.service.AuthService;
 
 import javax.validation.Valid;
+import java.net.URI;
 
 @RestController
 @RequestMapping(path = "/api/auth")
@@ -48,7 +49,7 @@ public class AuthController {
                     .header(
                             HttpHeaders.AUTHORIZATION,
                             jwtTokenUtil.generateAccessToken(user)
-                    ).build();
+                    ).body(jwtTokenUtil.generateAccessToken(user));
         } catch (BadCredentialsException ex) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).header(HttpHeaders.WARNING, ex.getMessage()).build();
         }
@@ -58,13 +59,14 @@ public class AuthController {
     }
 
     @PostMapping(path = "/register")
-    public ResponseEntity<UserDto> register(@RequestBody @Valid UserDto userDto) {
+    public ResponseEntity<User> register(@RequestBody @Valid UserDto userDto) {
         try {
             User created = authService.register(userDto);
+            URI location = URI.create(String.format("/api/users/%s", created.getId()));
+            return ResponseEntity.created(location).body(created);
         }
         catch (Exception ex){
-            ResponseEntity.badRequest().header(HttpHeaders.WARNING, ex.getMessage()).build();
+            return ResponseEntity.badRequest().header(HttpHeaders.WARNING, ex.getMessage()).build();
         }
-        return ResponseEntity.ok().build();
     }
 }

@@ -1,4 +1,4 @@
-package pl.polsl.telinf.s3.domain.dtoTODO;
+package pl.polsl.telinf.s3.domain.dto.exception;
 
 public class UserAlreadyExistsException extends Exception {
 
