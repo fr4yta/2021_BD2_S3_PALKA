@@ -1,9 +1,8 @@
 package pl.polsl.telinf.s3.domain.dto.exception;
 
-public class UserAlreadyExistsException extends Exception {
+public class UserAlreadyExistsException extends CustomException {
 
- @Override
  public String getMessage() {
-  return "User Already Exists!";
+  return "Dany użytkownik już istnieje!";
  }
 }

@@ -1,10 +1,8 @@
 package pl.polsl.telinf.s3.controller;
 
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import pl.polsl.telinf.s3.domain.dto.AuthRequest;
 import pl.polsl.telinf.s3.domain.dto.UserDto;
+import pl.polsl.telinf.s3.domain.dto.exception.CustomException;
+import pl.polsl.telinf.s3.domain.dto.exception.CustomExceptionResponse;
 import pl.polsl.telinf.s3.domain.model.user.User;
 import pl.polsl.telinf.s3.security.JwtTokenUtil;
 import pl.polsl.telinf.s3.service.AuthService;
@@ -34,7 +34,7 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody @Valid AuthRequest request) {
+    public ResponseEntity<?> login(@RequestBody @Valid AuthRequest request) {
         try {
             Authentication authenticate = authenticationManager
                     .authenticate(
@@ -50,23 +50,15 @@ public class AuthController {
                             HttpHeaders.AUTHORIZATION,
                             jwtTokenUtil.generateAccessToken(user)
                     ).body(jwtTokenUtil.generateAccessToken(user));
-        } catch (BadCredentialsException ex) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).header(HttpHeaders.WARNING, ex.getMessage()).build();
-        }
-        catch (Exception e) {
-            return ResponseEntity.badRequest().header(HttpHeaders.WARNING, e.getMessage()).build();
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(new CustomExceptionResponse(e.getMessage()));
         }
     }
 
     @PostMapping(path = "/register")
-    public ResponseEntity<User> register(@RequestBody @Valid UserDto userDto) {
-        try {
-            User created = authService.register(userDto);
-            URI location = URI.create(String.format("/api/users/%s", created.getId()));
-            return ResponseEntity.created(location).body(created);
-        }
-        catch (Exception ex){
-            return ResponseEntity.badRequest().header(HttpHeaders.WARNING, ex.getMessage()).build();
-        }
+    public ResponseEntity<?> register(@RequestBody @Valid UserDto userDto) throws CustomException {
+        User created = authService.register(userDto);
+        URI location = URI.create(String.format("/api/users/%s", created.getId()));
+        return ResponseEntity.created(location).body(created);
     }
 }
