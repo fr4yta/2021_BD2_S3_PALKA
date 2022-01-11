@@ -14,10 +14,16 @@
               cennik
             </li>
           </a>
-          <router-link to="login">
+          <router-link to="login" v-if="!loggedIn">
             <li class="menu-item d-inline-block text-uppercase">
               logowanie
             </li>
+          </router-link>
+          <li class="menu-item d-inline-block text-uppercase" @click="logout" style="cursor: pointer;" v-else>
+            wyloguj się
+          </li>
+          <router-link to="my-tickets">
+            <li class="btn btn-success btn-buyTicket" v-if="loggedIn" style="margin: 0; padding: 0 20px;">Moje bilety</li>
           </router-link>
         </ul>
       </nav>
@@ -142,7 +148,14 @@ export default {
     isLoggedIn() {
       if (localStorage.getItem('token'))
         this.loggedIn = true
+    },
+    logout() {
+      localStorage.removeItem('token');
+      this.$router.go()
     }
+  },
+  mounted() {
+    this.isLoggedIn();
   }
 }
 </script>

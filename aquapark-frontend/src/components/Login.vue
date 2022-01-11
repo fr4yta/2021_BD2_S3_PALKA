@@ -38,7 +38,7 @@ export default {
           })
           .catch((err) => {
             if (err.response.status === 400) {
-              self.$toastr.e("Nie wypełniłeś wszystkich pól wymaganych do zalogowania.")
+              self.$toastr.e("Niepoprawnie wypełnione lub puste pola.")
             } else if (err.response.status === 401) {
               self.$toastr.e("Błąd autoryzacji.")
             } else {
