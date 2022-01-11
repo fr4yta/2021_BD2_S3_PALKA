@@ -1,6 +1,7 @@
 package pl.polsl.telinf.s3.domain.dto;
 
 import lombok.Data;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import pl.polsl.telinf.s3.domain.model.user.User;
 import pl.polsl.telinf.s3.repository.jpa.JPAUserTypeRepository;
 import pl.polsl.telinf.s3.security.Role;
@@ -27,12 +28,12 @@ public class UserDto {
     private String firstName;
     private String lastName;
 
-    public User toUser(JPAUserTypeRepository userTypeRepository) {
+    public User toUser(JPAUserTypeRepository userTypeRepository, PasswordEncoder passwordEncoder) {
         User user = new User();
 
         user.setUsername(this.username);
         user.setEmail(this.email);
-        user.setPassword(this.password);
+        user.setPassword(passwordEncoder.encode(this.password));
         user.setFirstName(this.firstName);
         user.setLastName(this.lastName);
         user.setUserType(userTypeRepository.findUserTypeByUserTypeContains(Role.USER).orElse(null));

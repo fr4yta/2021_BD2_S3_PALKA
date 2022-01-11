@@ -74,7 +74,7 @@ class SecurityConfig extends WebSecurityConfigurerAdapter implements WebMvcConfi
                 .antMatchers("/api/auth/*").permitAll()
 
                 //admin only endpoints
-                //.antMatchers("/api/users")
+                .antMatchers("/api/users").hasAuthority(Role.ADMIN)
 
                 //private endpoints
                 .anyRequest().authenticated();

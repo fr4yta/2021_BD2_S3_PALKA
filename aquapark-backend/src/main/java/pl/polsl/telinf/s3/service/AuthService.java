@@ -3,6 +3,7 @@ package pl.polsl.telinf.s3.service;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import pl.polsl.telinf.s3.domain.dto.exception.UnmatchedPasswordsException;
 import pl.polsl.telinf.s3.domain.dto.exception.UserAlreadyExistsException;
@@ -17,10 +18,12 @@ import static java.lang.String.format;
 public class AuthService implements UserDetailsService {
     JPAUserRepository userRepository;
     JPAUserTypeRepository userTypeRepository;
+    PasswordEncoder passwordEncoder;
 
-    public AuthService(JPAUserRepository userRepository, JPAUserTypeRepository userTypeRepository) {
+    public AuthService(JPAUserRepository userRepository, JPAUserTypeRepository userTypeRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.userTypeRepository = userTypeRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -40,7 +43,7 @@ public class AuthService implements UserDetailsService {
         if(!checkIfPasswordsAreSame(userDto))
             throw new UnmatchedPasswordsException();
 
-        return userRepository.save(userDto.toUser(this.userTypeRepository));
+        return userRepository.save(userDto.toUser(this.userTypeRepository, this.passwordEncoder));
     }
 
     private static boolean checkIfPasswordsAreSame(UserDto userDto) {
