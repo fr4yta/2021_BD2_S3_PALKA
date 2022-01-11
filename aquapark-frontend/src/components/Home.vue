@@ -124,7 +124,8 @@ export default {
       reduced: false,
       quantity: 1,
       price1: 25,
-      price2: 30
+      price2: 30,
+      loggedIn: false
     }
   },
   methods: {
@@ -137,6 +138,10 @@ export default {
       } else {
         this.quantity--
       }
+    },
+    isLoggedIn() {
+      if (localStorage.getItem('token'))
+        this.loggedIn = true
     }
   }
 }

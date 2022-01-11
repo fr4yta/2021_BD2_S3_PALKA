@@ -8,8 +8,7 @@
       <input type="password" placeholder="HASŁO" v-model="password" @keypress.enter="submitLogin">
       <a class="btn btn-success btn-login" @click="submitLogin">ZALOGUJ SIĘ</a>
       <p class="register">Nie masz konta?
-        <router-link to="register">Zarejestruj się</router-link>
-        !
+        <router-link to="register">Zarejestruj się</router-link>!
       </p>
     </div>
   </div>
