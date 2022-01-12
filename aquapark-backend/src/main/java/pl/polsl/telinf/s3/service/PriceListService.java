@@ -8,6 +8,7 @@ import pl.polsl.telinf.s3.repository.jpa.JPAPriceItemOnPriceListRepository;
 import pl.polsl.telinf.s3.repository.jpa.JPAPriceItemTypeRepository;
 import pl.polsl.telinf.s3.repository.jpa.JPAPriceListRepository;
 
+import java.sql.Time;
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.List;
@@ -42,5 +43,9 @@ public class PriceListService {
 
     public List<PriceItemType> findAllPriceItemTypes() {
         return priceItemTypeRepository.findAll();
+    }
+
+    public PriceList addNewPriceList(PriceList toCreate) {
+        return priceListRepository.save(toCreate);
     }
 }

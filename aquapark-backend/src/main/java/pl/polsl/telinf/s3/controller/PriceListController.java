@@ -1,14 +1,14 @@
 package pl.polsl.telinf.s3.controller;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import pl.polsl.telinf.s3.domain.model.priceList.PriceItemOnPriceList;
 import pl.polsl.telinf.s3.domain.model.priceList.PriceItemType;
 import pl.polsl.telinf.s3.domain.model.priceList.PriceList;
 import pl.polsl.telinf.s3.service.PriceListService;
 
+import javax.validation.Valid;
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -28,6 +28,13 @@ public class PriceListController {
     @GetMapping(path = "/actualPriceList")
     ResponseEntity<PriceList> findActualPriceList(){
         return ResponseEntity.ok(priceListService.findActivePriceList());
+    }
+
+    @PostMapping(path = "/add")
+    ResponseEntity<PriceList> addNewPriceList(@RequestBody @Valid PriceList priceList) {
+        PriceList created = priceListService.addNewPriceList(priceList);
+        URI location = URI.create(String.format("/%s", created.getId()));
+        return ResponseEntity.created(location).body(created);
     }
 
     @GetMapping(path = "/priceLists")
