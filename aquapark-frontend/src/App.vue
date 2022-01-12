@@ -1,8 +1,50 @@
 <template>
   <div id="app">
-    <router-view />
+    <sidebar-menu :menu="adminMenu" v-if="this.$route.meta.showMenu"/>
+    <router-view/>
   </div>
 </template>
+<script>
+export default {
+  name: 'App',
+  data() {
+    return {
+      adminMenu: [
+        {
+          header: true,
+          title: 'AQUAPOLSL PANEL ADMINA',
+          hiddenOnCollapse: true
+        },
+        {
+          href: '/admin/users',
+          title: 'Użytkownicy',
+          icon: 'fas fa-user'
+        },
+        {
+          href: '#',
+          title: 'Cenniki / listy ofert',
+          icon: 'fas fa-clipboard-list',
+          child: [
+            {
+              href: '#',
+              title: 'Dodaj'
+            },
+            {
+              href: '#',
+              title: 'Zobacz'
+            }
+          ]
+        },
+        {
+          href: '/',
+          title: 'Powrót do strony głównej',
+          icon: 'fas fa-undo'
+        }
+      ]
+    }
+  }
+}
+</script>
 <style lang="scss">
 $background: #F2F7FF;
 $black: #000;

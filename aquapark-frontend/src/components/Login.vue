@@ -33,7 +33,9 @@ export default {
         password: this.password,
       })
           .then((res) => {
-            localStorage.setItem('token', res.data)
+            localStorage.setItem('token', res.data.jwtToken)
+            localStorage.setItem('userId', res.data.userId)
+            localStorage.setItem('userRole', res.data.userRole)
             self.$router.push('/')
           })
           .catch((err) => {

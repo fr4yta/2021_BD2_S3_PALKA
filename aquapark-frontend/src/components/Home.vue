@@ -1,32 +1,7 @@
 <template>
   <div class="container-fluid">
     <div class="container">
-      <nav class="navbar">
-        <img src="../assets/logo.svg" alt="Logo" class="img-fluid d-inline-block">
-        <ul class="menu">
-          <a href="#attractions">
-            <li class="menu-item d-inline-block text-uppercase">
-              atrakcje
-            </li>
-          </a>
-          <a href="#priceList">
-            <li class="menu-item d-inline-block text-uppercase">
-              cennik
-            </li>
-          </a>
-          <router-link to="login" v-if="!loggedIn">
-            <li class="menu-item d-inline-block text-uppercase">
-              logowanie
-            </li>
-          </router-link>
-          <li class="menu-item d-inline-block text-uppercase" @click="logout" style="cursor: pointer;" v-else>
-            wyloguj się
-          </li>
-          <router-link to="my-tickets">
-            <li class="btn btn-success btn-buyTicket" v-if="loggedIn" style="margin: 0; padding: 0 20px;">Moje bilety</li>
-          </router-link>
-        </ul>
-      </nav>
+      <Navbar></Navbar>
       <div class="welcome row">
         <div class="col-sm-6">
           <h1 class="greetings">Witaj w centrum rodzinnej rozrywki w Gliwicach!</h1>
@@ -123,15 +98,16 @@
 </template>
 
 <script>
+import Navbar from "./Navbar";
 export default {
-  name: "Home",
+  name: 'Home',
+  components: {Navbar},
   data() {
     return {
       reduced: false,
       quantity: 1,
       price1: 25,
-      price2: 30,
-      loggedIn: false
+      price2: 30
     }
   },
   methods: {
@@ -144,18 +120,7 @@ export default {
       } else {
         this.quantity--
       }
-    },
-    isLoggedIn() {
-      if (localStorage.getItem('token'))
-        this.loggedIn = true
-    },
-    logout() {
-      localStorage.removeItem('token');
-      this.$router.go()
     }
-  },
-  mounted() {
-    this.isLoggedIn();
   }
 }
 </script>
