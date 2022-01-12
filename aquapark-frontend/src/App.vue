@@ -21,16 +21,15 @@ export default {
           icon: 'fas fa-user'
         },
         {
-          href: '#',
           title: 'Cenniki / listy ofert',
           icon: 'fas fa-clipboard-list',
           child: [
             {
-              href: '#',
+              href: '/admin/price_lists/add',
               title: 'Dodaj'
             },
             {
-              href: '#',
+              href: '/admin/price_lists/show',
               title: 'Zobacz'
             }
           ]

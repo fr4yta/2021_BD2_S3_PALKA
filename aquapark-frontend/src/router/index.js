@@ -5,6 +5,7 @@ import Login from '../components/Login.vue'
 import Register from '../components/Register.vue'
 import Admin from '../components/Admin'
 import Users from "../components/admin/Users";
+import PriceLists from "../components/admin/PriceLists";
 
 Vue.use(VueRouter)
 
@@ -36,6 +37,14 @@ const routes = [
         path: '/admin/users',
         name: 'Users',
         component: Users,
+        meta: {
+            showMenu: true
+        }
+    },
+    {
+        path: '/admin/price_lists/show',
+        name: 'PriceLists',
+        component: PriceLists,
         meta: {
             showMenu: true
         }
