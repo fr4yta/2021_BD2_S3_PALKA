@@ -2,6 +2,8 @@ package pl.polsl.telinf.s3.controller;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import pl.polsl.telinf.s3.domain.dto.PriceItemDto;
+import pl.polsl.telinf.s3.domain.dto.PriceListDto;
 import pl.polsl.telinf.s3.domain.model.priceList.PriceItemOnPriceList;
 import pl.polsl.telinf.s3.domain.model.priceList.PriceItemType;
 import pl.polsl.telinf.s3.domain.model.priceList.PriceList;
@@ -30,13 +32,6 @@ public class PriceListController {
         return ResponseEntity.ok(priceListService.findActivePriceList());
     }
 
-    @PostMapping(path = "/add")
-    ResponseEntity<PriceList> addNewPriceList(@RequestBody @Valid PriceList priceList) {
-        PriceList created = priceListService.addNewPriceList(priceList);
-        URI location = URI.create(String.format("/%s", created.getId()));
-        return ResponseEntity.created(location).body(created);
-    }
-
     @GetMapping(path = "/priceLists")
     ResponseEntity<List<PriceList>> findAllPriceLists(){
         return ResponseEntity.ok(priceListService.findAllPriceLists());
@@ -45,5 +40,28 @@ public class PriceListController {
     @GetMapping(path = "/priceItemTypes")
     ResponseEntity<List<PriceItemType>> findAllPriceItemTypes(){
         return ResponseEntity.ok(priceListService.findAllPriceItemTypes());
+    }
+
+    @GetMapping(path = "/priceItems")
+    ResponseEntity<List<PriceItemOnPriceList>> findAllPriceItems () {
+        return ResponseEntity.ok(priceListService.findAllPriceItems());
+    }
+
+    //POSTS
+    @PostMapping(path = "/addList")
+    ResponseEntity<PriceList> addNewPriceList(@RequestBody @Valid PriceListDto priceListDto) {
+        PriceList created = priceListService.addNewPriceList(priceListDto.getName(), priceListDto.getValidFrom(),
+                priceListDto.getValidTo());
+        URI location = URI.create(String.format("/%s", created.getId()));
+
+        priceListService.addPriceItemsToPriceList(priceListDto.getItems());
+        return ResponseEntity.created(location).body(created);
+    }
+
+    @PostMapping(path ="/addItems")
+    ResponseEntity<List<PriceItemOnPriceList>> addNewPriceItems(@RequestBody @Valid List<PriceItemDto> items) {
+        List<PriceItemOnPriceList> priceItems = priceListService.addPriceItemsToPriceList(items);
+        URI location = URI.create(String.format("/%s", priceItems.get(0).getId()));
+        return ResponseEntity.created(location).body(priceItems);
     }
 }
