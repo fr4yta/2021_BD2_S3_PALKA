@@ -8,6 +8,8 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+import pl.polsl.telinf.s3.domain.dto.UserUpdateDto;
+import pl.polsl.telinf.s3.domain.dto.exception.CustomException;
 import pl.polsl.telinf.s3.service.UserService;
 import pl.polsl.telinf.s3.domain.model.user.User;
 import pl.polsl.telinf.s3.security.JwtTokenUtil;
@@ -27,6 +29,19 @@ public class UserContorller {
     @GetMapping
     public ResponseEntity<List<User>> findAllUsers(){
         return ResponseEntity.ok(userService.findAll());
+    }
+
+    @DeleteMapping
+    public ResponseEntity deleteUser(@RequestHeader(name = HttpHeaders.AUTHORIZATION) String token) {
+        userService.deleteUser(token);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PatchMapping
+    public ResponseEntity updateUserPassword(@RequestHeader(name = HttpHeaders.AUTHORIZATION)String token,
+                                             @RequestBody UserUpdateDto userUpdateDto) throws CustomException {
+        userService.changeUserPassword(token, userUpdateDto);
+        return ResponseEntity.noContent().build();
     }
 
 }

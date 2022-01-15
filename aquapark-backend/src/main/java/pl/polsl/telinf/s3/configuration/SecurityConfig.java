@@ -1,6 +1,7 @@
 package pl.polsl.telinf.s3.configuration;
 
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -75,7 +76,7 @@ class SecurityConfig extends WebSecurityConfigurerAdapter implements WebMvcConfi
                 .antMatchers("/api/auth/*").permitAll()
 
                 //admin only endpoints
-                .antMatchers("/api/users").hasAuthority(Role.ADMIN)
+                .antMatchers(HttpMethod.GET,"/api/users").hasAuthority(Role.ADMIN)
                 .antMatchers("/api/priceList/priceLists").hasAuthority(Role.ADMIN)
                 .antMatchers("/api/priceList/priceItemTypes").hasAuthority(Role.ADMIN)
                 .antMatchers("/api/priceList/priceItems").hasAuthority(Role.ADMIN)
