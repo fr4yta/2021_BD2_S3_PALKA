@@ -70,7 +70,8 @@ class SecurityConfig extends WebSecurityConfigurerAdapter implements WebMvcConfi
 
         http.authorizeRequests()
                 //public endpoints
-                .antMatchers("/api/priceList/actualPriceList").permitAll()
+                .antMatchers("/api/priceList/actualPriceItems").permitAll()
+                .antMatchers("/api/priceList/priceItemTypes").permitAll()
                 .antMatchers("/api/auth/*").permitAll()
 
                 //admin only endpoints

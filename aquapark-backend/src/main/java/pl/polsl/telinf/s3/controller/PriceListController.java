@@ -1,14 +1,17 @@
 package pl.polsl.telinf.s3.controller;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pl.polsl.telinf.s3.domain.dto.PriceItemDto;
 import pl.polsl.telinf.s3.domain.dto.PriceListDto;
+import pl.polsl.telinf.s3.domain.dto.exception.DataNotFoundException;
 import pl.polsl.telinf.s3.domain.model.priceList.PriceItemOnPriceList;
 import pl.polsl.telinf.s3.domain.model.priceList.PriceItemType;
 import pl.polsl.telinf.s3.domain.model.priceList.PriceList;
 import pl.polsl.telinf.s3.service.PriceListService;
 
+import javax.transaction.Transactional;
 import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
@@ -63,5 +66,18 @@ public class PriceListController {
         List<PriceItemOnPriceList> priceItems = priceListService.addPriceItemsToPriceList(items);
         URI location = URI.create(String.format("/%s", priceItems.get(0).getId()));
         return ResponseEntity.created(location).body(priceItems);
+    }
+
+    @DeleteMapping(path = "/priceItem/{id}")
+    ResponseEntity deletePriceItem(@PathVariable(name = "id") int id) throws DataNotFoundException{
+        priceListService.deletePriceItem(id);
+        return ResponseEntity.ok().build();
+    }
+
+    @PutMapping(path = "/priceItem/{id}")
+    ResponseEntity<PriceItemOnPriceList> editPriceItem(@PathVariable(name = "id") int id,
+                                                       @RequestBody PriceItemDto toUpdate) throws DataNotFoundException {
+        priceListService.updatePriceItem(id, toUpdate);
+        return ResponseEntity.noContent().build();
     }
 }
