@@ -1,4 +1,6 @@
 package pl.polsl.telinf.s3.service;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import pl.polsl.telinf.s3.domain.dto.UserUpdateDto;
 import pl.polsl.telinf.s3.domain.dto.exception.CustomException;
@@ -14,10 +16,12 @@ import java.util.List;
 public class UserService {
     private JPAUserRepository userRepository;
     private JwtTokenUtil jwtTokenUtil;
+    private PasswordEncoder passwordEncoder;
 
-    public UserService(JPAUserRepository userRepository, JwtTokenUtil jwtTokenUtil) {
+    public UserService(JPAUserRepository userRepository, JwtTokenUtil jwtTokenUtil, PasswordEncoder passwordEncoder, AuthenticationManager authenticationManager) {
         this.userRepository = userRepository;
         this.jwtTokenUtil = jwtTokenUtil;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public List<User> findAll(){
@@ -31,14 +35,15 @@ public class UserService {
     }
 
     public void changeUserPassword(String token, UserUpdateDto userUpdateDto) throws CustomException {
-        if(!checkIfOldPasswordIsCorrect(userUpdateDto.getNewPassword(), userUpdateDto.getOldRepeatedPassword()))
+        if(!checkIfOldPasswordIsCorrect(userUpdateDto.getNewPassword(), userUpdateDto.getRepeatedNewPassword()))
             throw new UnmatchedPasswordsException();
         User user = userRepository.findById(Integer.valueOf(jwtTokenUtil.getUserId(modifyUserToken(token))))
                 .orElseThrow(DataNotFoundException::new);
-        if(!user.getPassword().equals(userUpdateDto.getOldPassword()))
+        if(!passwordEncoder.matches(userUpdateDto.getOldPassword(), user.getPassword()))
             throw new UnmatchedPasswordsException();
 
-        user.setPassword(userUpdateDto.getNewPassword());
+        user.setPassword(passwordEncoder.encode(userUpdateDto.getNewPassword()));
+        userRepository.updateUserPassword(user.getId(), user.getPassword());
     }
 
     public boolean checkIfOldPasswordIsCorrect(String password, String passwordToCheck) {

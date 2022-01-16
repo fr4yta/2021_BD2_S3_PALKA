@@ -4,7 +4,7 @@ import lombok.Data;
 
 @Data
 public class UserUpdateDto {
-    private String newPassword;
     private String oldPassword;
-    private String oldRepeatedPassword;
+    private String newPassword;
+    private String repeatedNewPassword;
 }

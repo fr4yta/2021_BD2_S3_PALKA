@@ -14,6 +14,7 @@ import pl.polsl.telinf.s3.service.UserService;
 import pl.polsl.telinf.s3.domain.model.user.User;
 import pl.polsl.telinf.s3.security.JwtTokenUtil;
 
+import javax.transaction.Transactional;
 import javax.validation.Valid;
 import java.util.List;
 
@@ -38,6 +39,7 @@ public class UserContorller {
     }
 
     @PatchMapping
+    @Transactional
     public ResponseEntity updateUserPassword(@RequestHeader(name = HttpHeaders.AUTHORIZATION)String token,
                                              @RequestBody UserUpdateDto userUpdateDto) throws CustomException {
         userService.changeUserPassword(token, userUpdateDto);
