@@ -5,7 +5,11 @@ import Login from '../components/Login.vue'
 import Register from '../components/Register.vue'
 import Admin from '../components/Admin'
 import Users from "../components/admin/Users";
-import PriceLists from "../components/admin/PriceLists";
+import PriceListsShow from "../components/admin/PriceListsShow";
+import User from "../components/User";
+import UserTickets from "../components/user/UserTickets";
+import UserEdit from "../components/user/UserEdit";
+import PriceListsAdd from "../components/admin/PriceListsAdd";
 
 Vue.use(VueRouter)
 
@@ -30,7 +34,7 @@ const routes = [
         name: 'Admin',
         component: Admin,
         meta: {
-            showMenu: true
+            showAdminMenu: true
         }
     },
     {
@@ -38,15 +42,47 @@ const routes = [
         name: 'Users',
         component: Users,
         meta: {
-            showMenu: true
+            showAdminMenu: true
         }
     },
     {
         path: '/admin/price_lists/show',
-        name: 'PriceLists',
-        component: PriceLists,
+        name: 'PriceListsShow',
+        component: PriceListsShow,
         meta: {
-            showMenu: true
+            showAdminMenu: true
+        }
+    },
+    {
+        path: '/admin/price_lists/add',
+        name: 'PriceListsAdd',
+        component: PriceListsAdd,
+        meta: {
+            showAdminMenu: true
+        }
+    },
+    {
+        path: '/user',
+        name: 'User',
+        component: User,
+        meta: {
+            showUserMenu: true
+        }
+    },
+    {
+        path: '/user/edit',
+        name: 'UserEdit',
+        component: UserEdit,
+        meta: {
+            showUserMenu: true
+        }
+    },
+    {
+        path: '/user/tickets',
+        name: 'UserTickets',
+        component: UserTickets,
+        meta: {
+            showUserMenu: true
         }
     }
 ]

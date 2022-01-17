@@ -1,6 +1,7 @@
 <template>
   <div id="app">
-    <sidebar-menu :menu="adminMenu" v-if="this.$route.meta.showMenu"/>
+    <sidebar-menu :menu="adminMenu" v-if="this.$route.meta.showAdminMenu"/>
+    <sidebar-menu :menu="userMenu" v-if="this.$route.meta.showUserMenu"/>
     <router-view/>
   </div>
 </template>
@@ -33,6 +34,28 @@ export default {
               title: 'Zobacz'
             }
           ]
+        },
+        {
+          href: '/',
+          title: 'Powrót do strony głównej',
+          icon: 'fas fa-undo'
+        }
+      ],
+      userMenu: [
+        {
+          header: true,
+          title: 'AQUAPOLSL PANEL KLIENTA',
+          hiddenOnCollapse: true
+        },
+        {
+          href: '/user/edit',
+          title: 'Zmień hasło',
+          icon: 'fas fa-user'
+        },
+        {
+          href: '/user/tickets',
+          title: 'Moje bilety',
+          icon: 'fas fa-clipboard-list'
         },
         {
           href: '/',
