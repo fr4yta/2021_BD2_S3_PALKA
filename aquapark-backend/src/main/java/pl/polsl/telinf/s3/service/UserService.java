@@ -50,7 +50,7 @@ public class UserService {
         return password.equals(passwordToCheck);
     }
 
-    public String modifyUserToken(String token) {
+    public static String modifyUserToken(String token) {
         return token.replace("Bearer ", "");
     }
 }

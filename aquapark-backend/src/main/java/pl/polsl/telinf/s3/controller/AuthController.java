@@ -58,7 +58,7 @@ public class AuthController {
     }
 
     @PostMapping(path = "/register")
-    public ResponseEntity<?> register(@RequestBody @Valid UserDto userDto) throws CustomException {
+    public ResponseEntity<User> register(@RequestBody @Valid UserDto userDto) throws CustomException {
         User created = authService.register(userDto);
         URI location = URI.create(String.format("/api/users/%s", created.getId()));
         return ResponseEntity.created(location).body(created);

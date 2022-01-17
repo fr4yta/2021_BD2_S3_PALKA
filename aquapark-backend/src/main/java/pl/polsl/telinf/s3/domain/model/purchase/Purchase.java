@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
 import pl.polsl.telinf.s3.domain.model.priceList.PriceItemOnPriceList;
 import pl.polsl.telinf.s3.domain.model.user.User;
 

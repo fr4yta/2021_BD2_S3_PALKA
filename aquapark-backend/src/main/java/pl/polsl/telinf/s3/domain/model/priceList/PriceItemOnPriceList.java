@@ -5,6 +5,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
 import pl.polsl.telinf.s3.domain.model.pass.Pass;
 import pl.polsl.telinf.s3.domain.model.purchase.Purchase;
 import pl.polsl.telinf.s3.domain.model.ticket.Ticket;
@@ -39,7 +41,7 @@ public class PriceItemOnPriceList {
     @JoinColumn(name = "pass_id", nullable = false)
     private Pass pass;
 
-    @OneToMany (targetEntity = Purchase.class, cascade = CascadeType.ALL, mappedBy = "item", fetch = FetchType.LAZY)
+    @OneToMany (targetEntity = Purchase.class, cascade = CascadeType.ALL, mappedBy = "item")
     @JsonIgnore
     private Set<Purchase> purchases;
 
