@@ -20,9 +20,9 @@
       <li class="menu-item d-inline-block text-uppercase" @click="logout" style="cursor: pointer;" v-else>
         wyloguj się
       </li>
-      <router-link to="my-tickets" v-if="loggedIn">
+      <router-link to="user" v-if="loggedIn">
         <li class="btn btn-success btn-buyTicket" style="margin: 0; padding: 0 20px;">
-          Moje bilety
+          Panel klienta
         </li>
       </router-link>
       <router-link to="admin" v-if="loggedIn && admin">

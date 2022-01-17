@@ -27,7 +27,7 @@ import axios from 'axios'
 import moment from 'moment'
 
 export default {
-  name: 'PriceLists',
+  name: 'PriceListsShow',
   data() {
     return {
       priceLists: []
