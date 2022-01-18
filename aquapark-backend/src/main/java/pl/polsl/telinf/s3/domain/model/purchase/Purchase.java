@@ -11,9 +11,12 @@ import pl.polsl.telinf.s3.domain.model.user.User;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.Set;
 
 @Entity
-@Table(name = "purchases")
+@Table(name = "purchases", indexes = {
+        @Index(name = "idx_purchase_price_item_id", columnList = "price_item_id")
+})
 @Getter
 @Setter
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
@@ -28,7 +31,8 @@ public class Purchase {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @ManyToOne (targetEntity = PriceItemOnPriceList.class)
-    @JoinColumn(name = "price_item_on_price_list_id", nullable = false)
+    @ManyToOne(targetEntity = PriceItemOnPriceList.class)
+    @JoinColumn(name = "price_item_id", referencedColumnName = "id", nullable = false)
+    @NotFound (action=NotFoundAction.IGNORE)
     private PriceItemOnPriceList item;
 }

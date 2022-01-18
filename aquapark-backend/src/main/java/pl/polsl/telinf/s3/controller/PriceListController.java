@@ -68,6 +68,11 @@ public class PriceListController {
         return ResponseEntity.created(location).body(priceItems);
     }
 
+    @GetMapping(path = "priceItem/{id}")
+    ResponseEntity getPriceItem(@PathVariable(name = "id") int id) {
+        return ResponseEntity.of(priceListService.findPriceItemByPriceId(id));
+    }
+
     @DeleteMapping(path = "/priceItem/{id}")
     ResponseEntity deletePriceItem(@PathVariable(name = "id") int id) throws DataNotFoundException{
         priceListService.deletePriceItem(id);

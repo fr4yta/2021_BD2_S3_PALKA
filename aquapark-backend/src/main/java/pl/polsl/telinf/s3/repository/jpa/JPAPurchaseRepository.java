@@ -6,10 +6,15 @@ import org.springframework.stereotype.Repository;
 import pl.polsl.telinf.s3.domain.model.purchase.Purchase;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface JPAPurchaseRepository extends JpaRepository<Purchase, Integer> {
 
-    @Query("select p from Purchase p where p.user.id = ?1")
+    @Query("SELECT p FROM Purchase p WHERE p.id = ?1")
+    Optional<Purchase> findById(int id);
+
+    @Query(value = "SELECT * FROM purchases p JOIN price_items_on_price_lists i ON p.price_item_id= i.id WHERE p.user_id = ?1",
+    nativeQuery = true)
     List<Purchase> findAllByUserId(int userId);
 }

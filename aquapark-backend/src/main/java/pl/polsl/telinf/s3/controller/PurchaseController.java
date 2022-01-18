@@ -4,6 +4,8 @@ import org.apache.catalina.connector.Response;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import pl.polsl.telinf.s3.domain.dto.PurchaseById;
+import pl.polsl.telinf.s3.domain.dto.PurchaseByUser;
 import pl.polsl.telinf.s3.domain.dto.PurchaseDto;
 import pl.polsl.telinf.s3.domain.dto.exception.CustomException;
 import pl.polsl.telinf.s3.domain.model.purchase.Purchase;
@@ -27,13 +29,12 @@ public class PurchaseController {
     }
 
     @GetMapping(path = "/{id}")
-    public ResponseEntity<Purchase> findPurchaseById(@PathVariable(name = "id") int id) {
-        System.out.println("here");
-        return ResponseEntity.of(purchaseService.findById(id));
+    public ResponseEntity<PurchaseById> findPurchaseById(@PathVariable(name = "id") int id) {
+        return ResponseEntity.ok(purchaseService.findById(id));
     }
 
     @GetMapping(path = "/getAll")
-    public ResponseEntity<List<Purchase>> findPurchasesByUser(@RequestHeader(name = HttpHeaders.AUTHORIZATION) String token)
+    public ResponseEntity<List<PurchaseByUser>> findPurchasesByUser(@RequestHeader(name = HttpHeaders.AUTHORIZATION) String token)
             throws CustomException {
         return ResponseEntity.ok(purchaseService.findByUser(token));
     }

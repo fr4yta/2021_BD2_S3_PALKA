@@ -5,13 +5,12 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.annotations.NotFound;
-import org.hibernate.annotations.NotFoundAction;
 import pl.polsl.telinf.s3.domain.model.pass.Pass;
 import pl.polsl.telinf.s3.domain.model.purchase.Purchase;
 import pl.polsl.telinf.s3.domain.model.ticket.Ticket;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -23,7 +22,9 @@ public class PriceItemOnPriceList {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+
     private double price;
+
     @ManyToOne (targetEntity = PriceList.class)
     @JoinColumn(name = "price_lists_id", nullable = false)
     @JsonIgnore
@@ -43,6 +44,6 @@ public class PriceItemOnPriceList {
 
     @OneToMany (targetEntity = Purchase.class, cascade = CascadeType.ALL, mappedBy = "item")
     @JsonIgnore
-    private Set<Purchase> purchases;
+    private Set<Purchase> purchasesItems = new HashSet<>();
 
 }

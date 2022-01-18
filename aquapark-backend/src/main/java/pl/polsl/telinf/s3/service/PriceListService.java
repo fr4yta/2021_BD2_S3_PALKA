@@ -7,6 +7,7 @@ import pl.polsl.telinf.s3.domain.dto.exception.DataNotFoundException;
 import pl.polsl.telinf.s3.domain.model.priceList.PriceItemOnPriceList;
 import pl.polsl.telinf.s3.domain.model.priceList.PriceItemType;
 import pl.polsl.telinf.s3.domain.model.priceList.PriceList;
+import pl.polsl.telinf.s3.domain.model.purchase.Purchase;
 import pl.polsl.telinf.s3.repository.jpa.*;
 
 import javax.transaction.Transactional;
@@ -15,6 +16,7 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class PriceListService {
@@ -53,9 +55,11 @@ public class PriceListService {
     }
 
     public List<PriceItemOnPriceList> findAllPriceItems() {
-        priceItemOnPriceListRepository.findAll().forEach(item -> System.out.println(item.getId()));
         return priceItemOnPriceListRepository.findAll();
+    }
 
+    public Optional<PriceItemOnPriceList> findPriceItemByPriceId(int id) {
+        return priceItemOnPriceListRepository.findById(id);
     }
 
     public PriceList addNewPriceList(String name, Timestamp validFrom, Timestamp validTo) {
@@ -106,5 +110,13 @@ public class PriceListService {
                 .orElse(entity.getTicket()));
 
         priceItemOnPriceListRepository.save(entity);
+    }
+
+    public PriceItemOnPriceList findPriceItemByPurchaseId(int purchaseId) {
+        return priceItemOnPriceListRepository.findAll().stream().filter(item ->
+                !item.getPurchasesItems().stream()
+                        .filter(purchase -> purchase.getId() == purchaseId)
+                        .collect(Collectors.toList()).isEmpty())
+                .findFirst().orElse(null);
     }
 }
