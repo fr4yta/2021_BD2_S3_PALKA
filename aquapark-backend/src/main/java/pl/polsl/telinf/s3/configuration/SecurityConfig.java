@@ -1,6 +1,7 @@
 package pl.polsl.telinf.s3.configuration;
 
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -18,6 +19,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import pl.polsl.telinf.s3.repository.jpa.JPAUserRepository;
 import pl.polsl.telinf.s3.security.JwtTokenFilter;
 import pl.polsl.telinf.s3.security.Role;
@@ -28,6 +30,7 @@ import static java.lang.String.format;
 
 @EnableWebSecurity
 @EnableWebMvc
+@Configuration
 class SecurityConfig extends WebSecurityConfigurerAdapter implements WebMvcConfigurer {
 
     private JPAUserRepository userRepository;
@@ -100,7 +103,8 @@ class SecurityConfig extends WebSecurityConfigurerAdapter implements WebMvcConfi
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/**");
+        registry.addMapping("/**")
+                .allowedOrigins("http://localhost:8080");
     }
 
     @Override @Bean
@@ -118,6 +122,17 @@ class SecurityConfig extends WebSecurityConfigurerAdapter implements WebMvcConfi
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", new CorsConfiguration().applyPermitDefaultValues());
         return source;
+    }
+
+    @Bean
+    public WebMvcConfigurer corsConfigurer() {
+        return new WebMvcConfigurerAdapter() {
+            @Override
+            public void addCorsMappings(CorsRegistry registry) {
+                registry.addMapping("/**")
+                        .allowedOrigins("http://localhost:8080");
+            }
+        };
     }
 
 }
