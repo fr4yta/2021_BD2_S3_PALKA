@@ -10,6 +10,7 @@ import User from "../components/User";
 import UserTickets from "../components/user/UserTickets";
 import UserEdit from "../components/user/UserEdit";
 import PriceListsAdd from "../components/admin/PriceListsAdd";
+import Help from "../components/Help";
 
 Vue.use(VueRouter)
 
@@ -84,6 +85,11 @@ const routes = [
         meta: {
             showUserMenu: true
         }
+    },
+    {
+        path: '/help',
+        name: 'Help',
+        component: Help
     }
 ]
 

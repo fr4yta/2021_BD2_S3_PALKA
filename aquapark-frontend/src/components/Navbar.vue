@@ -12,6 +12,11 @@
           cennik
         </li>
       </a>
+      <router-link to="help">
+        <li class="menu-item d-inline-block text-uppercase">
+          pomoc
+        </li>
+      </router-link>
       <router-link to="login" v-if="!loggedIn">
         <li class="menu-item d-inline-block text-uppercase">
           logowanie
