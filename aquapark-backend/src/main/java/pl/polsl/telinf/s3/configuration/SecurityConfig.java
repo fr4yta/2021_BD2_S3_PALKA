@@ -25,13 +25,19 @@ import pl.polsl.telinf.s3.repository.jpa.JPAUserRepository;
 import pl.polsl.telinf.s3.security.JwtTokenFilter;
 import pl.polsl.telinf.s3.security.Role;
 
+import javax.servlet.Filter;
+import javax.servlet.FilterChain;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import static java.lang.String.format;
 
-@EnableWebSecurity
+
 @EnableWebMvc
 @Configuration
+@EnableWebSecurity
 class SecurityConfig extends WebSecurityConfigurerAdapter implements WebMvcConfigurer {
 
     private JPAUserRepository userRepository;
@@ -82,6 +88,7 @@ class SecurityConfig extends WebSecurityConfigurerAdapter implements WebMvcConfi
                 .antMatchers("/api/priceList/actualPriceItems").permitAll()
                 .antMatchers("/api/priceList/priceItemTypes").permitAll()
                 .antMatchers("/api/auth/*").permitAll()
+                .antMatchers(HttpMethod.PATCH, "/api/users").permitAll()
 
                 //admin only endpoints
                 .antMatchers(HttpMethod.GET,"/api/users").hasAuthority(Role.ADMIN)
@@ -102,12 +109,6 @@ class SecurityConfig extends WebSecurityConfigurerAdapter implements WebMvcConfi
 
     }
 
-    @Override
-    public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/**")
-                .allowedOrigins("http://localhost:8080");
-    }
-
     @Override @Bean
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
@@ -118,25 +119,4 @@ class SecurityConfig extends WebSecurityConfigurerAdapter implements WebMvcConfi
         return new BCryptPasswordEncoder();
     }
 
-    @Bean
-    CorsConfigurationSource corsConfigurationSource() {
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", new CorsConfiguration().applyPermitDefaultValues());
-        return source;
-    }
-
-    @Bean
-    public CorsFilter corsFilter() {
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        CorsConfiguration config = new CorsConfiguration();
-        config.setAllowCredentials(true);
-        config.addAllowedOrigin("http://localhost:8080");
-        config.addAllowedHeader("*");
-        config.addAllowedMethod("POST");
-        config.addAllowedMethod("GET");
-        config.addAllowedMethod("PATCH");
-        config.addAllowedMethod("DELETE");
-        source.registerCorsConfiguration("/**", config);
-        return new CorsFilter(source);
-    }
 }

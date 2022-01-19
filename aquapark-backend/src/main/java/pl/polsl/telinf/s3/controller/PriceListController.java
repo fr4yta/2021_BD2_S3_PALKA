@@ -73,13 +73,13 @@ public class PriceListController {
         return ResponseEntity.of(priceListService.findPriceItemByPriceId(id));
     }
 
-    @DeleteMapping(path = "/priceItem/{id}")
+    @PostMapping(path = "/priceItem/{id}/delete")
     ResponseEntity deletePriceItem(@PathVariable(name = "id") int id) throws DataNotFoundException{
         priceListService.deletePriceItem(id);
         return ResponseEntity.ok().build();
     }
 
-    @PutMapping(path = "/priceItem/{id}")
+    @PostMapping(path = "/priceItem/{id}/edit")
     ResponseEntity<PriceItemOnPriceList> editPriceItem(@PathVariable(name = "id") int id,
                                                        @RequestBody PriceItemDto toUpdate) throws DataNotFoundException {
         priceListService.updatePriceItem(id, toUpdate);
