@@ -21,6 +21,7 @@
         <th scope="col">#</th>
         <th scope="col">Cena</th>
         <th scope="col">Typ biletu</th>
+        <th scope="col">Akcje</th>
       </tr>
       </thead>
       <tbody>
@@ -28,6 +29,7 @@
         <th>{{ priceItem.id }}</th>
         <td>{{ priceItem.price }} zł</td>
         <td>{{ priceItem.ticket.ticketType.type === 'normal' ? 'Normalny' : 'Ulgowy' }}</td>
+        <td><a class="del" @click="deleteItem(priceItem.id)">Usuń</a></td>
       </tr>
       </tbody>
     </table>
@@ -55,6 +57,16 @@ export default {
     }
   },
   methods: {
+    deleteItem(id) {
+      let self = this
+      axios.post('http://localhost:8081/api/priceList/priceItem/' + id + '/delete')
+          .then(() => {
+            self.$toastr.s("Pomyślnie usunięto pozycję z cennika.")
+            this.$router.go()
+          }).catch(() => {
+        self.$toastr.e("Błąd przy usuwaniu. Skontaktuj się z programistą.")
+      })
+    },
     getPriceItems() {
       let self = this
       axios.get('http://localhost:8081/api/priceList/actualPriceItems')
@@ -100,3 +112,9 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+.del:hover {
+  cursor: pointer;
+}
+</style>

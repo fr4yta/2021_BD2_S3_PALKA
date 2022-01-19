@@ -38,7 +38,7 @@
             </div>
             <div class="col-sm-6" style="text-align: right;">
               <p class="price">{{ priceItem.price }} zł / h</p>
-              <a data-bs-toggle="modal" data-bs-target="#priceModal" @click="sendPrice(priceItem.price)"
+              <a @click="buyTicket(priceItem.id)"
                  class="btn btn-success btn-buyTicket">Kup bilet</a>
             </div>
           </div>
@@ -59,27 +59,6 @@
           </div>
         </div>
       </div>
-
-      <!-- Price modal -->
-      <div class="modal fade" id="priceModal" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title">Kup bilet</h5>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Zamknij"></button>
-            </div>
-            <div class="modal-body">
-              <div class="quantity-toggle">
-                <button @click="decrement()">&mdash;</button>
-                <input type="text" :value="quantity" readonly>
-                <button @click="increment()">&#xff0b;</button>
-              </div>
-              <p class="finalPrice">{{ quantity * price }} zł</p>
-              <a class="btn btn-success btn-buyTicket">Kup bilet</a>
-            </div>
-          </div>
-        </div>
-      </div>
     </div>
   </div>
 </template>
@@ -93,24 +72,24 @@ export default {
   components: {Navbar},
   data() {
     return {
-      quantity: 1,
       priceItems: [],
       price: null
     }
   },
   methods: {
-    sendPrice(price) {
-      this.price = price
-    },
-    increment() {
-      this.quantity++
-    },
-    decrement() {
-      if (this.quantity === 1) {
-        alert('Wartość mniejsza niż 1 nie jest możliwa do kupienia.')
-      } else {
-        this.quantity--
-      }
+    buyTicket(id) {
+      let self = this
+      let date = Math.floor(Date.now() / 1000) + 2592000
+      axios.post('http://localhost:8081/api/purchase', {
+        priceItemId: id,
+        entryDate: date // 30d
+      })
+          .then(() => {
+            self.$toastr.s("Bilet zakupiony. Znajdziesz go w swoim panelu klienta.")
+            self.$router.push('user/tickets')
+          }).catch(() => {
+        self.$toastr.e("Wystąpił błąd przy zakupie biletu. Skontaktuj się z kierownictwem aquaparku.")
+      })
     },
     getPriceItems() {
       let self = this
